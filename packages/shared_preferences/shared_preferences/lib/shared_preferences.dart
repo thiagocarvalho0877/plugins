@@ -7,10 +7,10 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:meta/meta.dart';
-import 'package:shared_preferences_linux/shared_preferences_linux.dart';
+// import 'package:shared_preferences_linux/shared_preferences_linux.dart';
 import 'package:shared_preferences_platform_interface/method_channel_shared_preferences.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_platform_interface.dart';
-import 'package:shared_preferences_windows/shared_preferences_windows.dart';
+// import 'package:shared_preferences_windows/shared_preferences_windows.dart';
 
 /// Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android), providing
 /// a persistent store for simple data.
@@ -20,7 +20,7 @@ class SharedPreferences {
   SharedPreferences._(this._preferenceCache);
 
   static const String _prefix = 'flutter.';
-  static Completer<SharedPreferences>? _completer;
+  static Completer<SharedPreferences> _completer;
   static bool _manualDartRegistrationNeeded = true;
 
   static SharedPreferencesStorePlatform get _store {
@@ -32,11 +32,11 @@ class SharedPreferences {
       if (!kIsWeb &&
           SharedPreferencesStorePlatform.instance
               is MethodChannelSharedPreferencesStore) {
-        if (Platform.isLinux) {
-          SharedPreferencesStorePlatform.instance = SharedPreferencesLinux();
-        } else if (Platform.isWindows) {
-          SharedPreferencesStorePlatform.instance = SharedPreferencesWindows();
-        }
+        // if (Platform.isLinux) {
+        //   SharedPreferencesStorePlatform.instance = SharedPreferencesLinux();
+        // } else if (Platform.isWindows) {
+        //   SharedPreferencesStorePlatform.instance = SharedPreferencesWindows();
+        // }
       }
       _manualDartRegistrationNeeded = false;
     }
@@ -66,7 +66,7 @@ class SharedPreferences {
       }
       _completer = completer;
     }
-    return _completer!.future;
+    return _completer.future;
   }
 
   /// The cache that holds all preferences.
@@ -83,37 +83,37 @@ class SharedPreferences {
   Set<String> getKeys() => Set<String>.from(_preferenceCache.keys);
 
   /// Reads a value of any type from persistent storage.
-  Object? get(String key) => _preferenceCache[key];
+  Object get(String key) => _preferenceCache[key];
 
   /// Reads a value from persistent storage, throwing an exception if it's not a
   /// bool.
-  bool? getBool(String key) => _preferenceCache[key] as bool?;
+  bool getBool(String key) => _preferenceCache[key] as bool;
 
   /// Reads a value from persistent storage, throwing an exception if it's not
   /// an int.
-  int? getInt(String key) => _preferenceCache[key] as int?;
+  int getInt(String key) => _preferenceCache[key] as int;
 
   /// Reads a value from persistent storage, throwing an exception if it's not a
   /// double.
-  double? getDouble(String key) => _preferenceCache[key] as double?;
+  double getDouble(String key) => _preferenceCache[key] as double;
 
   /// Reads a value from persistent storage, throwing an exception if it's not a
   /// String.
-  String? getString(String key) => _preferenceCache[key] as String?;
+  String getString(String key) => _preferenceCache[key] as String;
 
   /// Returns true if persistent storage the contains the given [key].
   bool containsKey(String key) => _preferenceCache.containsKey(key);
 
   /// Reads a set of string values from persistent storage, throwing an
   /// exception if it's not a string set.
-  List<String>? getStringList(String key) {
-    List<dynamic>? list = _preferenceCache[key] as List<dynamic>?;
+  List<String> getStringList(String key) {
+    List<dynamic> list = _preferenceCache[key] as List<dynamic>;
     if (list != null && list is! List<String>) {
       list = list.cast<String>().toList();
       _preferenceCache[key] = list;
     }
     // Make a copy of the list so that later mutations won't propagate
-    return list?.toList() as List<String>?;
+    return list?.toList() as List<String>;
   }
 
   /// Saves a boolean [value] to persistent storage in the background.
@@ -191,7 +191,7 @@ class SharedPreferences {
     final Map<String, Object> preferencesMap = <String, Object>{};
     for (final String key in fromSystem.keys) {
       assert(key.startsWith(_prefix));
-      preferencesMap[key.substring(_prefix.length)] = fromSystem[key]!;
+      preferencesMap[key.substring(_prefix.length)] = fromSystem[key];
     }
     return preferencesMap;
   }

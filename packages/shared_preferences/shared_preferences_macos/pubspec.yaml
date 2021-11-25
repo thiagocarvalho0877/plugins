@@ -5,7 +5,7 @@ issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+
 version: 2.0.2
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
   flutter: ">=2.0.0"
 
 flutter:
@@ -18,7 +18,8 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences_platform_interface: ^2.0.0
+  shared_preferences_platform_interface:
+    path: ../shared_preferences_platform_interface
 
 dev_dependencies:
   pedantic: ^1.10.0
